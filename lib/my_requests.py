@@ -25,12 +25,12 @@ class MyRequests():
             return MyRequests._send(url, data, headers, cookies, 'DELETE')
 
     @staticmethod
-    def _send(url: str, data: dict, headers, cookies: dict, method: str, headres=None):
+    def _send(url: str, data: dict, headers: dict, cookies: dict, method: str):
         url = f"{ENV_ONJECT.get_base_url()}{url}"
         if headers is None:
-            headers = []
+            headers = {}
         if cookies is None:
-            cookies = []
+            cookies = {}
 
             Logger.add_request(url, data, headers, cookies, method)
 
