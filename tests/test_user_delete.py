@@ -1,11 +1,13 @@
 import time
-
+import allure
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
-
+@allure.epic("Delete cases")
 class TestUserDelete(BaseCase):
+    @allure.description("This test delete user id 2")
+    @allure.feature('Positive')
     def test_delete_user_id_2(self):
         user_id = 2
         email = 'vinkotov@example.com'
@@ -21,6 +23,9 @@ class TestUserDelete(BaseCase):
         assert response.text == "Please, do not delete test users with ID 1, 2, 3, 4 or 5.", \
             f"Response does not match what is expected with ID 1, 2, 3, 4 or 5. Your ID {user_id}"
 
+
+    @allure.description("This test delete new user")
+    @allure.feature('Positive')
     def test_delete_new_user(self):
         email, username, first_name, last_name, password, user_id = self.registration_user()
 
@@ -43,6 +48,8 @@ class TestUserDelete(BaseCase):
         assert response2.text == "Invalid username/password supplied", \
             f"Deletion failed for user {user_id, email, password}"
 
+    @allure.description("This test deletion by another user")
+    @allure.feature('Negative')
     def test_deletion_by_another_user(self):
         email, username, first_name, last_name, password, user_id = self.registration_user()
 

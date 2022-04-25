@@ -1,12 +1,14 @@
 import json
 import time
-
+import allure
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
-
+@allure.epic("Edit user cases")
 class TestUserEdit(BaseCase):
+    @allure.description("This test edit just created user")
+    @allure.feature('Positive')
     def test_edit_just_created_user(self):
         # register
 
@@ -39,6 +41,8 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
+    @allure.description("This test no auth")
+    @allure.feature('Negative')
     def test_not_auth(self):
         new_name = "Changed Name"
         user_id = 33459
@@ -48,6 +52,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response, 400)
         assert response.text == "Auth token not supplied", "Response is changed when unauthorized user tries to edit"
 
+    @allure.description("This test authorized by other users")
+    @allure.feature('Negative')
     def test_authorized_by_other_users(self):
         # register
 
@@ -84,6 +90,8 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
+    @allure.description("This test new email without the symbol")
+    @allure.feature('Negative')
     def test_new_email_without_the_symbol(self):
         # register
 
@@ -105,6 +113,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response, 400)
         assert response.text == "Invalid email format", "Response does not match what is expected with invalid email"
 
+    @allure.description("This test firstname short")
+    @allure.feature('Negative')
     def test_firstname_short(self):
         # register
 

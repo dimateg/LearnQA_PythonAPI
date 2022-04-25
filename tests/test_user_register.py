@@ -1,10 +1,11 @@
 import pytest
+import allure
 from datetime import datetime
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
-
+@allure.epic("Register user")
 class TestUserRegister(BaseCase):
     parametrized_data = [
         (
@@ -44,6 +45,8 @@ class TestUserRegister(BaseCase):
         )
     ]
 
+    @allure.description("This test create user successfully")
+    @allure.feature('Positive')
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
 
@@ -52,6 +55,8 @@ class TestUserRegister(BaseCase):
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
+    @allure.description("This test create user with existing email")
+    @allure.feature('Positive')
     def test_create_user_with_existing_email(self):
         email = 'vinkotov@example.com'
         data = self.prepare_registration_data(email)
@@ -62,6 +67,8 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             "utf-8") == f"Users with email '{email}' already exists", f"Unexpected response content {response.content}"
 
+    @allure.description("This test create user without @ on email")
+    @allure.feature('Positive')
     def test_create_user_without(self):
         email = 'vinkotovexample.com'
         data = self.prepare_registration_data(email)
@@ -72,7 +79,8 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             "utf-8") == "Invalid email format", f"Unexpected response content {response.content}"
 
-
+    @allure.description("This test create user username one symbol")
+    @allure.feature('Positive')
     def test_create_user_username_one_symbol(self):
         data ={
             "password": '123',
@@ -88,6 +96,8 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             "utf-8") == "The value of 'username' field is too short", f"Unexpected response content {response.content}"
 
+    @allure.description("This test create user username longname")
+    @allure.feature('Positive')
     def test_create_user_username_longname(self):
         username = ('a' * 250)
         base_part = "learnqa"
@@ -108,6 +118,8 @@ class TestUserRegister(BaseCase):
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
+    @allure.description("This test create user without required parameter")
+    @allure.feature('Negative')
     @pytest.mark.parametrize('password, username, firstName, lastName, email', parametrized_data)
     def test_create_user_without_required_parameter(self, password, username, firstName, lastName, email):
         data = {
