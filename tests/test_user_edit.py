@@ -1,4 +1,6 @@
 import json
+import time
+
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
@@ -51,6 +53,8 @@ class TestUserEdit(BaseCase):
 
         email, username, first_name, last_name, password, user_id = self.registration_user()
         auth_sid, token = self.login_user(email, password)
+
+        time.sleep(2)
 
         email2, username2, first_name2, last_name2, password2, user_id2 = self.registration_user()
         auth_sid2, token2 = self.login_user(email2, password2)
